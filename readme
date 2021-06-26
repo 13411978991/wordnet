@@ -1,0 +1,104 @@
+建议用typora打开
+
+
+
+python版本3.6
+
+需要安装的包在 requirements文件中已经列明
+
+
+
+**如果前端需要与后端交互，请运行app.py**--flask实例，接受浏览器请求
+
+**Config.py-**-配置文件，url，database（也就是modwiggler_data.db）
+
+
+
+**运行流程：**
+
+**spyder/spyder.py**：爬虫爬取样例，表（spyder_data)
+
+![spyder_data](static/example/spyder_data.PNG)
+
+**spyder/word_net_process.py**--爬取文件处理，得到每个keyword下的频率和形容词关系表
+
+word_frequency
+
+![word_frequency](static/example/word_frequency.PNG)
+
+![wordcloud_1622808116.6491585](static/images/wordcloud_1622808116.6491585.jpg)
+
+relationship
+
+![relationship](static/example/relationship.PNG)
+
+**get_wordcloud_adjnet\get.py**--词云和形容词网络的蓝图
+
+**get_wordcloud_adjnet\draw_wordcloud.py**--生成词云，返回词云图片路径
+
+**get_wordcloud_adjnet\get_adjective_net.py**--生成形容词网络，返回形容词网络列表
+
+**get_wordcloud_adjnet\draw_neo4j.py**--返回形容词网络，返回格式如下
+
+```
+{
+
+  "elements": {
+
+​    "edges": [
+
+​      {
+
+​        "data": {
+
+​          "relationship": "synonyms",
+
+​          "soure": 211,
+
+​          "target": 103
+
+​        }
+
+​      }]
+​       "nodes": [
+​                    {
+​                        "data": {
+​                            "id": 0,
+​                            "label": "adj_net",
+​                            "name": "functional"
+​                        }
+​                    }]
+
+}
+```
+
+运行py文件，输入账号密码，以及keyword，运行成功后返回浏览器neo4j，输入MATCH (n:adj_net) RETURN n
+
+![neo4j](static/example/neo4j.PNG)
+
+
+
+
+
+两个 接口 介绍：
+
+一、关键词词云查询接口
+
+1、接口地址：http://127.0.0.1:5000/index/wordcloud
+
+2、接口请求示例:{"keyword":["effect","sound"]}
+
+3、接口返回示例:{"code": 1, "state": "sucess", "data": "./static/images/wordcloud_1622882051.8013668.jpg"}
+
+二、关键词 的形容词wordnet关系网络接口
+
+1、接口地址:http://127.0.0.1:5000/index/adj_net
+
+2、接口请求示例 :{"keyword":["effect","sound"]}
+
+3、接口返回示例:{"code": 1, "state": "sucess", "data": [["able", "capable", "synonyms"], ["active", "dynamic", "synonyms"], ["actual",
+
+"potential", "antonyms"], ["actual", "real", "synonyms"], ["added", "total", "synonyms"], ["additional", "extra",
+
+"synonyms"], ["advanced", "further", "synonyms"]}
+
